@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Greeting Web Service Client</title>
+</head>
+<body>
+<h1>Greeting Web Service Client</h1>
+<label for="name">Enter your name:</label>
+<input type="text" id="name" name="name" required>
+<br><br>
+<button onclick="getGreeting()">Get Greeting</button>
+<div id="result"></div>
+<script>
+    function getGreeting() {
+        const nameInput = document.querySelector('#name');
+        const name = nameInput.value;
+        const url = "http://localhost:8080/greeting?name=" + name;
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                const resultDiv = document.querySelector('#result');
+                resultDiv.textContent = data.content;
+            });
+    }
+</script>
+</body>
+</html>

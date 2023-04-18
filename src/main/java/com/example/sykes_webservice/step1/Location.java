@@ -1,4 +1,4 @@
-package com.example.sykes_webservice;
+package com.example.sykes_webservice.step1;
 
 public class Location 
 {

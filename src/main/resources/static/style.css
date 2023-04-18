@@ -2,7 +2,7 @@ body {
     background-color: #36393f;
     color: #dcddde;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    text-align: center;
+
 }
 
 h1 {
@@ -10,6 +10,7 @@ h1 {
     font-weight: bold;
     margin-top: 30px;
     margin-bottom: 20px;
+    text-align: center;
 }
 
 label {

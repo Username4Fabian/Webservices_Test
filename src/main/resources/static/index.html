@@ -1,15 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
     <title>Greeting Web Service Client</title>
 </head>
 <body>
 <h1>Greeting Web Service Client</h1>
-<label for="name">Enter your name:</label>
-<input type="text" id="name" name="name" required>
-<br><br>
-<button onclick="getGreeting()">Get Greeting</button>
-<div id="result"></div>
+<div class="fullContainer">
+<div class="container">
+    <div class="user-input">
+        <label for="name">Enter your name:</label>
+        <input type="text" id="name" name="name" required>
+        <button onclick="getGreeting()">Get Greeting</button>
+        <div class="result-container">
+            <div class="result" id="result"></div>
+        </div>
+    </div>
+
 <script>
     function getGreeting() {
         const nameInput = document.querySelector('#name');

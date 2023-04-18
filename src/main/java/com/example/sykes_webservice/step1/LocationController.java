@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -54,6 +55,16 @@ public class LocationController {
                 .findFirst()
                 .orElseThrow(() -> new LocationNotFoundException("Die angeforderte Location wurde nicht gefunden"));
     }
+
+    @GetMapping("/nearest")
+    public Location findNearest(@RequestParam(value = "latitude", defaultValue = "47.383333") Double latitude, @RequestParam(value = "longitude", defaultValue = "15.1") Double longitude) {
+        Location givenLocation = new Location("Gegebener Ort", latitude, longitude);
+
+        return knownLocations.stream()
+                .min(Comparator.comparing(location -> location.distanceTo(givenLocation)))
+                .orElseThrow(() -> new LocationNotFoundException("Keine Locations gefunden"));
+    }
+
 
     @ExceptionHandler(LocationNotFoundException.class)
     public ResponseEntity<String> handleLocationNotFoundException(LocationNotFoundException ex) {

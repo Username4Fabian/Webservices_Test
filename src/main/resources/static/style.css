@@ -87,3 +87,12 @@ button:hover {
     margin-top: 5px;
     max-width: 70%;
 }
+
+.resultCords {
+    background-color: #7289da;
+    color: #f2f3f5;
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 5px;
+    max-width: 70%;
+}

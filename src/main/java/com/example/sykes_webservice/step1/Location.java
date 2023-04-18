@@ -66,7 +66,7 @@ public class Location
 			double lon2 = other.getLongitude();
 
 			// Exakte Berechnung
-			// Dezimale Positionsangaben in BOgenmaß umrechnen
+			// Dezimale Positionsangaben in Bogenmaß umrechnen
 			lat1 = Math.toRadians(lat1);
 			lat2 = Math.toRadians(lat2);
 			lon1 = Math.toRadians(lon1);

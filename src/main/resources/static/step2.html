@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>Greeting Web Service Client</title>
+</head>
+<body>
+<h1>Location Website with Google-Maps</h1>
+<div class="fullContainer">
+    <div class="container">
+        <div class="user-input">
+            <label for="name">Enter your City:</label>
+            <input type="text" id="name" name="name" required>
+            <button onclick="getLocation()">Locate</button>
+            <div class="result-container">
+                <div class="result" id="result"></div>
+            </div>
+        </div>
+
+        <script>
+            function getLocation() {
+                const nameInput = document.querySelector('#name');
+                const name = nameInput.value;
+                const url = "http://localhost:8080/location?name=" + name;
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Standort nicht gefunden');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const resultDiv = document.querySelector('#result');
+                        const googleMapsLink = `https://www.google.com/maps?q=${data.latitude},${data.longitude}`;
+                        resultDiv.innerHTML = `Location: ${data.name}<br>
+                          Latitude: ${data.latitude}<br>
+                          Longitude: ${data.longitude}<br>
+                          <a href="${googleMapsLink}" target="_blank">View on Google Maps</a>`;
+                        resultDiv.style.whiteSpace = "pre-line";
+                    })
+                    .catch(error => {
+                        const resultDiv = document.querySelector('#result');
+                        resultDiv.textContent = error.message;
+                    });
+            }
+        </script>
+</body>
+</html>

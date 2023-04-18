@@ -32,10 +32,10 @@
                 })
                 .then(data => {
                   const resultDiv = document.querySelector('#result');
-                  resultDiv.textContent = "Location: " + data.name + "\n" +
-                                          "Latitude: " + data.latitude + "\n" +
-                                          "Longitude: " + data.longitude;
-                  resultDiv.style.whiteSpace = "pre-line";
+                    resultDiv.textContent = "Location: " + data.name + "\n" +
+                                            "Latitude: " + data.latitude + "\n" +
+                                            "Longitude: " + data.longitude;
+                    resultDiv.style.whiteSpace = "pre-line";
 
                 })
                 .catch(error => {

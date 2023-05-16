@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>Location Website: Cities and Coordinates</title>
+</head>
+<body>
+<h1>Location Website: Cities and Coordinates</h1>
+
+<div class="fullContainer">
+    <div class="container">
+        <div class="user-input">
+            <label for="name">Enter your City:</label>
+            <input type="text" id="name" name="name">
+            <button onclick="getLocation()">Locate</button>
+            <div class="result-container">
+                <div class="result" id="result"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<div class="fullContainer">
+    <div class="container">
+        <div class="user-input">
+            <label for="name">Enter your Coordinates:</label>
+            <input type="number" id="lat" name="lat" pattern="[0-9]*" step="any">
+            <input type="number" id="lon" name="lon" pattern="[0-9]*" step="any">
+            <button onclick="getCoords()">Locate</button>
+            <div class="result-container">
+                <div class="result" id="resultCords"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<div class="fullContainer">
+    <div class="container">
+        <div class="user-input">
+            <label for="latAlt">Enter your Latitude:</label>
+            <input type="number" id="latAlt" name="latAlt" pattern="[0-9]*" step="any">
+            <label for="lonAlt">Enter your Longitude:</label>
+            <input type="number" id="lonAlt" name="lonAlt" pattern="[0-9]*" step="any">
+            <button onclick="getAltitude()">Get Altitude</button>
+            <div class="result-container">
+                <div class="result" id="resultAlt"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function getCoords() {
+        const latInput = document.querySelector('#lat');
+        const lonInput = document.querySelector('#lon');
+        const lat = latInput.value;
+        const lon = lonInput.value;
+        const url = `http://localhost:8080/nearest?latitude=${lat}&longitude=${lon}`;
+
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Standort nicht gefunden');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const resultDiv = document.querySelector('#resultCords'); // Korrigierte Zeile
+                const googleMapsLink = `https://www.google.com/maps?q=${data.latitude},${data.longitude}`;
+                const directionsLink = `https://www.google.com/maps/dir/?api=1&origin=${lat},${lon}&destination=${data.latitude},${data.longitude}`;
+                resultDiv.innerHTML = `Nächster Ort: ${data.name}<br>
+                            Breitengrad: ${data.latitude}<br>
+                            Längengrad: ${data.longitude}<br>
+                            <a href="${googleMapsLink}" target="_blank">Standort auf Google Maps anzeigen</a><br>
+                            <a href="${directionsLink}" target="_blank">Routenplaner auf Google Maps</a>`;
+                resultDiv.style.whiteSpace = "pre-line";
+            })
+            .catch(error => {
+                const resultDiv = document.querySelector('#resultCords');
+                resultDiv.textContent = error.message;
+            });
+    }
+
+
+    function getLocation() {
+        const nameInput = document.querySelector('#name');
+        const name = nameInput.value;
+        const url = "http://localhost:8080/location?name=" + name;
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Standort nicht gefunden');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const resultDiv = document.querySelector('#result');
+                const googleMapsLink = `https://www.google.com/maps?q=${data.latitude},${data.longitude}`;
+                resultDiv.innerHTML = `Location: ${data.name}<br>
+                          Latitude: ${data.latitude}<br>
+                          Longitude: ${data.longitude}<br>
+                          <a href="${googleMapsLink}" target="_blank">View on Google Maps</a>`;
+                resultDiv.style.whiteSpace = "pre-line";
+            })
+            .catch(error => {
+                const resultDiv = document.querySelector('#result');
+                resultDiv.textContent = error.message;
+            });
+    }
+    function getAltitude() {
+        const latInput = document.querySelector('#latAlt');
+        const lonInput = document.querySelector('#lonAlt');
+        const lat = latInput.value;
+        const lon = lonInput.value;
+        const url = `http://localhost:8080/altitude?latitude=${lat}&longitude=${lon}`;
+
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Altitude not found for the given coordinates');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const resultDiv = document.querySelector('#resultAlt');
+                resultDiv.innerHTML = `Altitude: ${data} meters`;
+                resultDiv.style.whiteSpace = "pre-line";
+            })
+            .catch(error => {
+                const resultDiv = document.querySelector('#resultAlt');
+                resultDiv.textContent = error.message;
+            });
+    }
+
+    document.querySelector('#name').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            getLocation();
+        }
+    });
+
+    document.querySelector('#lon').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            getCoords();
+        }
+    });
+
+    document.querySelector('#lonAlt').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            getAltitude();
+        }
+    });
+
+</script>
+</body>
+</html>
+</title>
+</head>
+</html>

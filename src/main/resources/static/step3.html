@@ -35,67 +35,67 @@
             </div>
 
 
-        <script>
+            <script>
 
-            function getCoords() {
-                const latInput = document.querySelector('#lat');
-                const lonInput = document.querySelector('#lon');
-                const lat = latInput.value;
-                const lon = lonInput.value;
-                const url = `http://localhost:8080/nearest?latitude=${lat}&longitude=${lon}`;
+                function getCoords() {
+                    const latInput = document.querySelector('#lat');
+                    const lonInput = document.querySelector('#lon');
+                    const lat = latInput.value;
+                    const lon = lonInput.value;
+                    const url = `http://localhost:8080/nearest?latitude=${lat}&longitude=${lon}`;
 
-                fetch(url)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Standort nicht gefunden');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        const resultDiv = document.querySelector('#resultCords'); // Korrigierte Zeile
-                        const googleMapsLink = `https://www.google.com/maps?q=${data.latitude},${data.longitude}`;
-                        const directionsLink = `https://www.google.com/maps/dir/?api=1&origin=${lat},${lon}&destination=${data.latitude},${data.longitude}`;
-                        resultDiv.innerHTML = `Nächster Ort: ${data.name}<br>
+                    fetch(url)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Standort nicht gefunden');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            const resultDiv = document.querySelector('#resultCords'); // Korrigierte Zeile
+                            const googleMapsLink = `https://www.google.com/maps?q=${data.latitude},${data.longitude}`;
+                            const directionsLink = `https://www.google.com/maps/dir/?api=1&origin=${lat},${lon}&destination=${data.latitude},${data.longitude}`;
+                            resultDiv.innerHTML = `Nächster Ort: ${data.name}<br>
                             Breitengrad: ${data.latitude}<br>
                             Längengrad: ${data.longitude}<br>
                             <a href="${googleMapsLink}" target="_blank">Standort auf Google Maps anzeigen</a><br>
                             <a href="${directionsLink}" target="_blank">Routenplaner auf Google Maps</a>`;
-                        resultDiv.style.whiteSpace = "pre-line";
-                    })
-                    .catch(error => {
-                        const resultDiv = document.querySelector('#resultCords');
-                        resultDiv.textContent = error.message;
-                    });
-            }
+                            resultDiv.style.whiteSpace = "pre-line";
+                        })
+                        .catch(error => {
+                            const resultDiv = document.querySelector('#resultCords');
+                            resultDiv.textContent = error.message;
+                        });
+                }
 
 
-            function getLocation() {
-                const nameInput = document.querySelector('#name');
-                const name = nameInput.value;
-                const url = "http://localhost:8080/location?name=" + name;
-                fetch(url)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Standort nicht gefunden');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        const resultDiv = document.querySelector('#result');
-                        const googleMapsLink = `https://www.google.com/maps?q=${data.latitude},${data.longitude}`;
-                        resultDiv.innerHTML = `Location: ${data.name}<br>
+                function getLocation() {
+                    const nameInput = document.querySelector('#name');
+                    const name = nameInput.value;
+                    const url = "http://localhost:8080/location?name=" + name;
+                    fetch(url)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Standort nicht gefunden');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            const resultDiv = document.querySelector('#result');
+                            const googleMapsLink = `https://www.google.com/maps?q=${data.latitude},${data.longitude}`;
+                            resultDiv.innerHTML = `Location: ${data.name}<br>
                           Latitude: ${data.latitude}<br>
                           Longitude: ${data.longitude}<br>
                           <a href="${googleMapsLink}" target="_blank">View on Google Maps</a>`;
-                        resultDiv.style.whiteSpace = "pre-line";
-                    })
-                    .catch(error => {
-                        const resultDiv = document.querySelector('#result');
-                        resultDiv.textContent = error.message;
-                    });
-            }
+                            resultDiv.style.whiteSpace = "pre-line";
+                        })
+                        .catch(error => {
+                            const resultDiv = document.querySelector('#result');
+                            resultDiv.textContent = error.message;
+                        });
+                }
 
 
-        </script>
+            </script>
 </body>
 </html>

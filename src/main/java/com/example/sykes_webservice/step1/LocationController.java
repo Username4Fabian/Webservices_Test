@@ -1,5 +1,6 @@
 package com.example.sykes_webservice.step1;
 
+
 import jakarta.annotation.PostConstruct;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,14 +8,20 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+
+
 
 @RestController
 public class LocationController {
 
     private List<Location> knownLocations;
+    private SrtmFile srtmFile;
 
     @PostConstruct
     public void init() {
@@ -45,6 +52,8 @@ public class LocationController {
         knownLocations.add(new Location("Schwechat", 48.1381, 16.4708));
         knownLocations.add(new Location("Ternitz", 47.7275, 16.0361));
         knownLocations.add(new Location("Baden bei Wien", 48.0069, 16.2308));
+
+        srtmFile = new SrtmFile(new File("srtm_40_03.asc"));
     }
 
 
@@ -69,6 +78,18 @@ public class LocationController {
     @ExceptionHandler(LocationNotFoundException.class)
     public ResponseEntity<String> handleLocationNotFoundException(LocationNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+
+    @GetMapping("/altitude")
+    public ResponseEntity<Double> getAltitude(@RequestParam("latitude") Double latitude, @RequestParam("longitude") Double longitude) {
+        Location location = new Location("Given Location", latitude, longitude);
+        Optional<Double> altitude = srtmFile.getAltitudeForLocation(location);
+        if (altitude.isPresent()) {
+            return ResponseEntity.ok(altitude.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     public static class LocationNotFoundException extends RuntimeException {

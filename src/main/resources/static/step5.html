@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<html>
+<head>
+  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Höhenprofil</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+</head>
+<body>
+<h1>Höhenprofil</h1>
+<div>
+  <label for="startLat">Startpunkt (Breitengrad):</label>
+  <input type="text" id="startLat" name="startLat">
+  <label for="startLon">Startpunkt (Längengrad):</label>
+  <input type="text" id="startLon" name="startLon">
+</div>
+<div>
+  <label for="endLat">Endpunkt (Breitengrad):</label>
+  <input type="text" id="endLat" name="endLat">
+  <label for="endLon">Endpunkt (Längengrad):</label>
+  <input type="text" id="endLon" name="endLon">
+</div>
+<button onclick="generateChart()">Chart generieren</button>
+<canvas id="chart" class="chart"></canvas>
+
+<script>
+  function generateChart() {
+    var startLat = parseFloat(document.getElementById('startLat').value);
+    var startLon = parseFloat(document.getElementById('startLon').value);
+    var endLat = parseFloat(document.getElementById('endLat').value);
+    var endLon = parseFloat(document.getElementById('endLon').value);
+
+    // AJAX request to retrieve the altitude data
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "/chart-altitude?startLat=" + startLat + "&startLon=" + startLon + "&endLat=" + endLat + "&endLon=" + endLon + "&numberOfPoints=" + numberOfPoints, true);    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        var heightData = JSON.parse(xhr.responseText);
+
+        var ctx = document.getElementById('chart').getContext('2d');
+        var chart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: Array.from({ length: heightData.length }, (_, i) => i + 1),
+            datasets: [{
+              label: 'Höhenprofil',
+              data: heightData,
+              borderColor: 'blue',
+              fill: false
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: false
+              }
+            },
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: 'Position'
+                }
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: 'Höhe (m)'
+                }
+              }
+            }
+          }
+        });
+
+        // Adjust chart canvas size
+        chart.canvas.parentNode.style.width = '300px';
+        chart.canvas.parentNode.style.height = '200px';
+      }
+    };
+    xhr.send();
+  }
+
+</script>
+</body>
+</html>

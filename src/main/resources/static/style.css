@@ -2,7 +2,6 @@ body {
     background-color: #36393f;
     color: #dcddde;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-
 }
 
 h1 {
@@ -19,18 +18,7 @@ label {
     margin-top: 20px;
 }
 
-input[type="text"] {
-    background-color: #2f3136;
-    border: none;
-    border-radius: 5px;
-    color: #dcddde;
-    font-size: 18px;
-    height: 30px;
-    margin-top: 10px;
-    padding: 5px;
-    width: 300px;
-}
-
+input[type="text"],
 input[type="number"] {
     background-color: #2f3136;
     border: none;
@@ -59,8 +47,9 @@ button:hover {
     background-color: #677bc4;
 }
 
-#result {
-    font-size: 18px;
+.chart {
+    width: 50px;
+    height: 30px;
     margin-top: 20px;
 }
 
@@ -70,7 +59,7 @@ button:hover {
     align-items: flex-start;
 }
 
-.fullContainer{
+.fullContainer {
     margin-top: 50px;
     display: flex;
     flex-direction: column;

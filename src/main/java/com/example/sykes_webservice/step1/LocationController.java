@@ -92,6 +92,28 @@ public class LocationController {
         }
     }
 
+    @GetMapping("/chart-altitude")
+    public ResponseEntity<List<Double>> getChartAltitude(
+            @RequestParam("startLat") Double startLat,
+            @RequestParam("startLon") Double startLon,
+            @RequestParam("endLat") Double endLat,
+            @RequestParam("endLon") Double endLon,
+            @RequestParam("numberOfPoints") Integer numberOfPoints) {
+        Location startLocation = new Location("Start Location", startLat, startLon);
+        Location endLocation = new Location("End Location", endLat, endLon);
+        List<Location> intermediateLocations = startLocation.calculateIntermediateLocations(endLocation, numberOfPoints);
+
+        List<Double> altitudeData = new ArrayList<>();
+        for (Location location : intermediateLocations) {
+            Optional<Double> altitude = srtmFile.getAltitudeForLocation(location);
+            if (altitude.isPresent()) {
+                altitudeData.add(altitude.get());
+            }
+        }
+
+        return ResponseEntity.ok(altitudeData);
+    }
+
     public static class LocationNotFoundException extends RuntimeException {
         public LocationNotFoundException(String message) {
             super(message);

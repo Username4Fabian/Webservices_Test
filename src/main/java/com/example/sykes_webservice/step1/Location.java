@@ -1,5 +1,8 @@
 package com.example.sykes_webservice.step1;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Location
 {
 	String name;
@@ -79,6 +82,19 @@ public class Location
 		azimuth = (azimuth + 360) % 360;
 
 		return azimuth;
+	}
+
+	public List<Location> calculateIntermediateLocations(Location other, int numberOfPoints) {
+		List<Location> intermediateLocations = new ArrayList<Location>();
+		double dLat = (other.getLatitude() - this.getLatitude()) / (numberOfPoints + 1);
+		double dLon = (other.getLongitude() - this.getLongitude()) / (numberOfPoints + 1);
+
+		for (int i = 1; i <= numberOfPoints; i++) {
+			double lat = this.getLatitude() + i * dLat;
+			double lon = this.getLongitude() + i * dLon;
+			intermediateLocations.add(new Location("Point " + i + " of " + numberOfPoints, lat, lon));
+		}
+		return intermediateLocations;
 	}
 
 

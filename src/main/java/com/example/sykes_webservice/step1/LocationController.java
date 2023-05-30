@@ -53,7 +53,7 @@ public class LocationController {
         knownLocations.add(new Location("Ternitz", 47.7275, 16.0361));
         knownLocations.add(new Location("Baden bei Wien", 48.0069, 16.2308));
 
-        srtmFile = new SrtmFile(new File("srtm_40_03.asc"));
+        srtmFile = new SrtmFile(new File("/Users/fabiansykes/Documents/GitHub/srtm_40_03.asc"));
     }
 
 

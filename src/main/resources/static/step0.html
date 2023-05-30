@@ -5,33 +5,31 @@
     <meta charset="UTF-8">
     <title>Greeting Web Service Client</title>
 </head>
-<body>
 <h1>Greeting Web Service Client</h1>
 <div class="fullContainer">
-<div class="container">
-    <div class="user-input">
-        <label for="name">Enter your name:</label>
-        <input type="text" id="name" name="name" required>
-        <button onclick="getGreeting()">Get Greeting</button>
-        <div class="result-container">
-            <div class="result" id="result"></div>
+    <div class="container">
+        <div class="user-input">
+            <label for="name">Enter your name:</label>
+            <input type="text" id="name" name="name" required>
+            <button onclick="getGreeting()">Get Greeting</button>
+            <div class="result-container">
+                <div class="result" id="result"></div>
 
-            
+
+            </div>
         </div>
-    </div>
 
-<script>
-    function getGreeting() {
-        const nameInput = document.querySelector('#name');
-        const name = nameInput.value;
-        const url = "http://localhost:8080/greeting?name=" + name;
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                const resultDiv = document.querySelector('#result');
-                resultDiv.textContent = data.content;
-            });
-    }
-</script>
-</body>
+        <script>
+            function getGreeting() {
+                const nameInput = document.querySelector('#name');
+                const name = nameInput.value;
+                const url = "http://localhost:8080/greeting?name=" + name;
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        const resultDiv = document.querySelector('#result');
+                        resultDiv.textContent = data.content;
+                    });
+            }
+        </script>
 </html>
